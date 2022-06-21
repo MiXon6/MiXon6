@@ -1,0 +1,187 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
+
+char tabla[3][3];
+const char igrac = 'X';
+const char pc = 'O';
+
+
+void resetujtablu()
+{
+	system("cls");
+	int i,j;
+   for(i=0;i<3;i++)
+   {
+      for(j=0;j<3;j++)
+      {
+         tabla[i][j] = ' ';
+      }
+   }
+}
+void ispisitablu()
+{
+   printf(" %c | %c | %c ", tabla[0][0], tabla[0][1], tabla[0][2]);
+   printf("\n---|---|---\n");
+   printf(" %c | %c | %c ", tabla[1][0], tabla[1][1], tabla[1][2]);
+   printf("\n---|---|---\n");
+   printf(" %c | %c | %c ", tabla[2][0], tabla[2][1], tabla[2][2]);
+   printf("\n");
+}
+int proveripraznamesta()
+{
+   int praznamesta=9,i,j;
+
+   for(i=0;i<3;i++)/*za red*/
+   {
+      for(j=0; j<3;j++)/* za kolonu*/
+      {
+         if(tabla[i][j] != ' ')
+         {
+            praznamesta--;
+         }
+      }
+   }
+   return praznamesta;
+}
+void potez()
+{
+   int x;
+   int y;
+
+   do
+   {
+   	  printf("Unesi red(1-3): ");
+      scanf("%d", &x);
+      x--;
+      printf("Unesi kolonu(1-3): ");
+      scanf("%d", &y);
+      y--;
+
+      if(tabla[x][y] != ' ')
+      {
+         printf("Pogresan potez!\n");
+      }
+      else
+      {
+         tabla[x][y] = igrac;
+         break;
+      }	
+	
+      
+   } while (tabla[x][y] != ' ');
+   
+}
+void pcpotez()
+{
+	/*bot*/
+   srand(time(0));
+   int x,y;
+   if(proveripraznamesta() > 0)
+   {
+      do
+      {
+         x = rand() % 3;
+         y = rand() % 3;
+      } while (tabla[x][y] != ' ');
+      
+      tabla[x][y] = pc;
+   }
+   else
+   {
+      ispispobednika(' ');
+   }
+}
+char proveripobednika()
+{
+	int i;
+   /*za redove*/
+   for(i=0;i<3;i++)
+   {
+      if(tabla[i][0] == tabla[i][1] && tabla[i][0] == tabla[i][2])
+      {
+         return tabla[i][0];
+      }
+   }
+   /*za kolone*/
+   for(i=0;i<3;i++)
+   {
+      if(tabla[0][i] == tabla[1][i] && tabla[0][i] == tabla[2][i])
+      {
+         return tabla[0][i];
+      }
+   }
+   /*za dijagonale*/
+   if(tabla[0][0] == tabla[1][1] && tabla[0][0] == tabla[2][2])
+   {
+      return tabla[0][0];
+   }
+   if(tabla[0][2] == tabla[1][1] && tabla[0][2] == tabla[2][0])
+   {
+      return tabla[0][2];
+   }
+
+   return ' ';
+}
+void ispispobednika(char pobednik)
+{
+   if(pobednik == igrac)
+   {
+      printf("Pobedio si!");
+   }
+   else if(pobednik == pc)
+   {
+      printf("Izgubio si!");
+   }
+   else{
+      printf("Nereseno je!");
+   }
+}
+
+int main()
+{
+	
+	char pobednik = ' ';
+   char izbor = ' ';
+
+   do
+   {
+      pobednik = ' ';
+      izbor = ' ';
+      resetujtablu();
+
+      while(pobednik == ' ' && proveripraznamesta() != 0)
+      {
+         ispisitablu();
+
+         potez();
+         pobednik = proveripobednika();
+         if(pobednik != ' ' || proveripraznamesta() == 0)
+         {
+            break;
+         }
+
+         pcpotez();
+         pobednik = proveripobednika();
+         if(pobednik != ' ' || proveripraznamesta() == 0)
+         {
+            break;
+         }
+      }
+
+      ispisitablu();
+      ispispobednika(pobednik);
+
+      printf("\nDa li zelis jos da igras? (Y/N): ");
+      scanf("%c");
+      scanf("%c", &izbor);
+      izbor = toupper(izbor);
+   } while (izbor == 'Y');
+
+   printf("Hvala sto si igrao!");
+
+	return 0;
+}
+
+   
