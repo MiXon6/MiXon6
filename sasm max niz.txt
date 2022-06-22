@@ -1,0 +1,28 @@
+%include "io.inc"
+section .data 
+a: dd 12,65,3,91,54,66,-12,5,-56,105
+n: dd 10 
+section .text 
+global CMAIN 
+CMAIN:    
+   mov eax,1
+   mov ebx,[n]
+   mov esi,a
+   mov edx,[a]
+petlja:
+    mov ecx,0
+    cmp eax,ebx
+    je kraj
+    mov ecx,[esi+4*eax]
+    cmp ecx,edx
+    jg m
+    jmp v
+m:
+    mov edx,ecx
+v:
+    inc eax
+    jmp petlja
+kraj:
+    PRINT_DEC 4,edx
+    xor eax,eax
+   ret
