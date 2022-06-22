@@ -11,7 +11,8 @@ const char pc = 'O';
 int izaberi()
 {
 	int n;
-	printf("Unesi 1 ako zelis da igras protiv kompijutera:\nUnesi 2 ako zelis da igras protiv druga:\n");
+	printf("------DOBROSOAO U IKS-OKS IGRI------\n");
+	printf("\n\nUnesi 1 ako zelis da igras protiv kompijutera:\nUnesi 2 ako zelis da igras protiv druga:\n");
 	scanf("%d",&n);
 	if(n==1)
 		return 1;/* kada igra protiv kompa*/
